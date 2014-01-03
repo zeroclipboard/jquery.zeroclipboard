@@ -68,7 +68,6 @@ jQuery(document).ready(function($) {
 
 **Untested jQuery versions:**  
  - Anything below 1.7.x (incompatible jQuery Special Events API)
- - 2.0.0b1
 
 
 ## Documentation
