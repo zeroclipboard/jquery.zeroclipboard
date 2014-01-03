@@ -48,44 +48,78 @@ In your web page:
 
 ## Examples
 
-Using an API similar to the HTML5 Clipboard API:
+Offers an API similar to the HTML5 Clipboard API.
+_Note:_ Some of these examples will also be leveraging the [jQuery.Range plugin](http://jquerypp.com/#range) where noted.
+
+### Example 1: Using `beforeCopy`
+
+The following example uses the `beforeCopy` event to change the selected text before it is copied. The modified selection is what will be copied into the clipboard if the action is not prevented.
+
+```js
+jQuery(document).ready(function($) {
+  $("body").on("beforeCopy", ".zclip", function() {
+    // Select the text of this element; this will be copied by default
+    $("#textToCopy").range().select();  // ** Using the jQuery.Range plugin
+  });
+});
+```
+
+
+### Example 2: Using `copy`
+
+The following example uses the `copy` event to set data into several different clipboard sectors.
+
+```js
+jQuery(document).ready(function($) {
+  $("body").on("copy", ".zclip", function(/* ClipboardEvent */ e) {
+    // Get the currently selected text
+    var textToCopy = $.Range.current().toString();  // ** Using the jQuery.Range plugin
+    
+    // If there isn't any currently selected text, just ignore this event
+    if (!textToCopy) {
+      return;
+    }
+    
+    // Clear out any existing data in the pending clipboard transaction
+    e.clipboardData.clearData();
+
+    // Set your own data into the pending clipboard transaction
+    e.clipboardData.setData("text/plain", textToCopy);
+    e.clipboardData.setData("text/html", "<b>" + textToCopy + "</b>");
+    e.clipboardData.setData("application/rtf", "{\\rtf1\\ansi\n{\\b " + textToCopy + "}}");
+    e.clipboardData.setData("text/x-markdown", "**" + textToCopy + "**");
+    
+    // Prevent the default action of copying the currently selected text into the clipboard
+    e.preventDefault();
+  });
+});
+```
+
+### Example 3: Using `afterCopy`
+
+This is the same as [Example #1](#example-1-using-beforecopy), except that it also uses the `afterCopy` event to "celebrate".
 
 ```js
 jQuery(document).ready(function($) {
   var eventsMap = {
-    beforeCopy: function() {
+    "beforeCopy": function() {
       // Select the text of this element; this will be copied by default
       $("#textToCopy").range().select();  // ** Using the jQuery.Range plugin
     },
-    copy: function(/* ClipboardEvent */ e) {
-      // Clear out any existing data in the pending clipboard transaction
-      e.clipboardData.clearData();
-
-      // Set your own data into the pending clipboard transaction
-      var textToCopy = $.Range.current().toString();  // ** Using the jQuery.Range plugin
-      e.clipboardData.setData("text/plain", textToCopy);
-      e.clipboardData.setData("text/html", "<b>" + textToCopy + "</b>");
-      e.clipboardData.setData("application/rtf", "{\\rtf1\\ansi\n{\\b " + textToCopy + "}}");
-      e.clipboardData.setData("text/x-markdown", "**" + textToCopy + "**");
-      
-      // Prevent the default action of copying selected text into the clipboard
-      e.preventDefault();
-    },
-    afterCopy: function(e) {
-      if (e.clipboardData.didSucceed("text/plain")) {
-        alert("Successfully copied text into the clipboard!");
+    "afterCopy": function(/* afterCopyEvent */ e) {
+      // NOTE: The `afterCopyEvent` event interface is not based on any existing DOM event, so the event model
+      // is still just a draft version. If you have any suggestions, please submit a new issue in this repo!
+      if (e.clipboardData.status("text/plain") === true) {
+        alert("Copy succeeded. Yay!");
       }
       else {
-        alert("Failed to copy text into the clipboard....");
+        alert("Copy failed... BOOOOOO!!!");
       }
     }
   };
-  // Handle the events only for delegated elements with the `zclip` class
   $("body").on(eventsMap, ".zclip");
 });
 ```
-
-** **jQuery.Range plugin:** [jQuery++ docs](http://jquerypp.com/#range), [DoneJS docs](http://donejs.com/docs.html#!jQuery.Range), [annotated source](http://jquerypp.com/release/latest/docs/range.html)
 
 
 ## Compatibility
