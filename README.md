@@ -25,4 +25,5 @@ jQuery(document).ready(function($) {
         alert("Failed to copy text into the clipboard....");
       }
     });
+});
 ```
