@@ -37,11 +37,12 @@ In your web page:
     $("body")
       .on("copy", ".zclip", function(/* ClipboardEvent */ e) {
         e.clipboardData.clearData();
-        e.clipboardData.setData("text/plain", "Testing 1-2-3!");
+        e.clipboardData.setData("text/plain", $(this).data("zclip-text"));
         e.preventDefault();
       });
   });
 </script>
+<button class="zclip" data-zclip-text="Testing 1-2-3!">Click to copy!</button>
 ```
 
 
@@ -51,13 +52,17 @@ Using an API similar to the HTML5 Clipboard API:
 
 ```js
 jQuery(document).ready(function($) {
-  $("body")
-    .on("copy", ".zclip", function(/* ClipboardEvent */ e) {
+  var eventsMap = {
+    beforeCopy: function() {
+      // Select the text of this element; this will be copied by default
+      $("#textToCopy").range().select();  // ** Using the jQuery.Range plugin
+    },
+    copy: function(/* ClipboardEvent */ e) {
       // Clear out any existing data in the pending clipboard transaction
       e.clipboardData.clearData();
 
       // Set your own data into the pending clipboard transaction
-      var textToCopy = $(this).data("zclip-text");
+      var textToCopy = $.Range.current().toString();  // ** Using the jQuery.Range plugin
       e.clipboardData.setData("text/plain", textToCopy);
       e.clipboardData.setData("text/html", "<b>" + textToCopy + "</b>");
       e.clipboardData.setData("application/rtf", "{\\rtf1\\ansi\n{\\b " + textToCopy + "}}");
@@ -65,17 +70,22 @@ jQuery(document).ready(function($) {
       
       // Prevent the default action of copying selected text into the clipboard
       e.preventDefault();
-    })
-    .on("afterCopy", ".zclip", function(e) {
+    },
+    afterCopy: function(e) {
       if (e.clipboardData.didSucceed("text/plain")) {
         alert("Successfully copied text into the clipboard!");
       }
       else {
         alert("Failed to copy text into the clipboard....");
       }
-    });
+    }
+  };
+  // Handle the events only for delegated elements with the `zclip` class
+  $("body").on(eventsMap, ".zclip");
 });
 ```
+
+** **jQuery.Range plugin:** [jQuery++ docs](http://jquerypp.com/#range), [DoneJS docs](http://donejs.com/docs.html#!jQuery.Range), [annotated source](http://jquerypp.com/release/latest/docs/range.html)
 
 
 ## Compatibility
