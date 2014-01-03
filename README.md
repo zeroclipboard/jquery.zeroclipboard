@@ -19,10 +19,11 @@ ZeroClipboard requires the use of Flash Player 10.0.0 or higher.
 ## Getting Started
 Check the [jQuery Plugins Registry](http://plugins.jquery.com/zeroclipboard/) for the latest published version of this plugin!
 
-You can also download the [production version][min] or the [development version][max] from GitHub.
+You can also download the [production version][min] or the [development version][max] from GitHub. You will also need a [ZeroClipboard v2.x SWF][swf].
 
 [min]: https://raw.github.com/JamesMGreene/jquery.zeroclipboard/master/dist/jquery.zeroclipboard.min.js
 [max]: https://raw.github.com/JamesMGreene/jquery.zeroclipboard/master/dist/jquery.zeroclipboard.js
+[swf]: https://raw.github.com/JamesMGreene/jquery.zeroclipboard/master/dist/ZeroClipboard.swf
 
 In your web page:
 
