@@ -36,7 +36,9 @@ In your web page:
   jQuery(document).ready(function($) {
     $("body")
       .on("copy", ".zclip", function(/* ClipboardEvent */ e) {
+        e.clipboardData.clearData();
         e.clipboardData.setData("text/plain", "Testing 1-2-3!");
+        e.preventDefault();
       });
   });
 </script>
@@ -51,8 +53,16 @@ Using an API similar to the HTML5 Clipboard API:
 jQuery(document).ready(function($) {
   $("body")
     .on("copy", ".zclip", function(/* ClipboardEvent */ e) {
+      // Clear out any existing data in the pending clipboard transaction
+      e.clipboardData.clearData();
+
       // Set your own data into the pending clipboard transaction
-      e.clipboardData.setData("text/plain", $(this).data("zclip-text"));
+      var textToCopy = $(this).data("zclip-text");
+      e.clipboardData.setData("text/plain", textToCopy);
+      e.clipboardData.setData("text/html", "<b>" + textToCopy + "</b>");
+      e.clipboardData.setData("application/rtf", "{\\rtf1\\ansi\n{\\b " + textToCopy + "}}");
+      e.clipboardData.setData("text/x-markdown", "**" + textToCopy + "**");
+      
       // Prevent the default action of copying selected text into the clipboard
       e.preventDefault();
     })
