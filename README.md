@@ -51,7 +51,10 @@ Using an API similar to the HTML5 Clipboard API:
 jQuery(document).ready(function($) {
   $("body")
     .on("copy", ".zclip", function(/* ClipboardEvent */ e) {
+      // Set your own data into the pending clipboard transaction
       e.clipboardData.setData("text/plain", $(this).data("zclip-text"));
+      // Prevent the default action of copying selected text into the clipboard
+      e.preventDefault();
     })
     .on("afterCopy", ".zclip", function(e) {
       if (e.clipboardData.didSucceed("text/plain")) {
