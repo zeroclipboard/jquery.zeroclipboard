@@ -13,9 +13,22 @@ The `click` event will also be bubbled after the `afterCopy` event handlers have
 
 ## Prerequisites
 
-ZeroClipboard requires the use of Flash Player 10.0.0 or higher.
+ZeroClipboard requires the use of Flash Player 10.0.0 or higher. See [ZeroClipboard](https://github.com/zeroclipboard/zeroclipboard) for more details about the underlying mechanism.
 
-See [ZeroClipboard](https://github.com/zeroclipboard/zeroclipboard) for more details about the underlying mechanism.
+This plugin's functionality is made possible by the smart default configurations values made in ZeroClipboard, plus overriding two options:
+
+```js
+ZeroClipboard.config({
+  // Disables debugging `console` messages with deprecation warnings, etc.
+  // This is not strictly necessary but provides a better experience for downstream consumers.
+  debug: false,
+
+  // Disabling allows the plugin to handle calling `ZeroClipboard.activate(...);` itself so that
+  // we can take advantage of jQuery's delegated `mouseover` event handlers rather than relying
+  // on ZeroClipboard's direct (per-element) `mouseover` event handlers.
+  autoActivate: false
+});
+```
 
 
 ## Getting Started
