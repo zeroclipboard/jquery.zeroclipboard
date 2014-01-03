@@ -13,7 +13,7 @@ The `click` event will also be bubbled after the `afterCopy` event handlers have
 
 ZeroClipboard requires the use of Flash Player 10.0.0 or higher. See [ZeroClipboard](https://github.com/zeroclipboard/zeroclipboard) for more details about the underlying mechanism.
 
-This plugin's functionality is made possible by the smart default configurations values made in ZeroClipboard, plus overriding two options:
+This plugin's functionality is made possible by the smart default configuration values made in ZeroClipboard, plus overriding two options:
 
 ```js
 ZeroClipboard.config({
