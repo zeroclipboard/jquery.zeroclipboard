@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/JamesMGreene/jquery.zeroclipboard.png)](https://travis-ci.org/JamesMGreene/jquery.zeroclipboard)
+
 # jquery.zeroclipboard
 
 Bind to the `beforecopy`, `copy`, and `aftercopy` events, custom DOM-like events for clipboard injection generated using jQuery's Special Events API and [ZeroClipboard](http://zeroclipboard.org/)'s Core module. In order for the clipboard injection functionality to be hooked up, you _**MUST**_ bind a handler for either `beforecopy` or `copy` on the selected element set.
@@ -162,10 +164,6 @@ jQuery(document).ready(function($) {
  - Anything below 1.7.x (incompatible jQuery Special Events API)
 
 
-## Documentation
-_(Coming soon)_
-
-
 ## Release History
- - 0.1.0: Published to the jQuery Plugins Registry on 2014-06-XX
+ - 0.1.0: Published to the jQuery Plugins Registry on 2014-06-10
     - Initial release.
