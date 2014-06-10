@@ -1,26 +1,22 @@
 # jquery.zeroclipboard
 
-Bind to the `beforeCopy`, `copy`, and `afterCopy` events, custom DOM-like events generated using jQuery's Special Events API. In order for the clipboard injection functionality to be hooked up [using [ZeroClipboard](http://zeroclipboard.org/)], you _**MUST**_  bind a handler for either `beforeCopy` or `copy` on the selected element set.
+Bind to the `beforecopy`, `copy`, and `aftercopy` events, custom DOM-like events for clipboard injection generated using jQuery's Special Events API and [ZeroClipboard](http://zeroclipboard.org/)'s Core module. In order for the clipboard injection functionality to be hooked up, you _**MUST**_ bind a handler for either `beforecopy` or `copy` on the selected element set.
 
-The `beforeCopy` and `copy` events trigger when the user clicks on a bound element.
+The `beforecopy` and `copy` events trigger when the user clicks on a bound element.
 
-The `afterCopy` event triggers after the clipboard injection has been attempted, regardless of whether or not the injection succeeded.
+The `aftercopy` event triggers after the clipboard injection has been attempted, regardless of whether or not the injection succeeded.
 
-The `click` event will also be bubbled after the `afterCopy` event handlers have all been triggered or stopped.
+The `click` event will also be bubbled after the `aftercopy` event handlers have all been triggered or stopped.
 
 
 ## Prerequisites
 
-ZeroClipboard requires the use of Flash Player 10.0.0 or higher. See [ZeroClipboard](https://github.com/zeroclipboard/zeroclipboard) for more details about the underlying mechanism.
+ZeroClipboard requires the use of Flash Player 11.0.0 or higher. See [ZeroClipboard](https://github.com/zeroclipboard/zeroclipboard) for more details about the underlying mechanism.
 
-This plugin's functionality is made possible by the smart default configuration values made in ZeroClipboard, plus overriding two options:
+This plugin's functionality is made possible by the smart default configuration values made in ZeroClipboard `v2.x`, plus internally overriding one configuration option:
 
 ```js
 ZeroClipboard.config({
-  // Disables debugging `console` messages with deprecation warnings, etc.
-  // This is not strictly necessary but provides a better experience for downstream consumers.
-  debug: false,
-
   // Disabling allows the plugin to handle calling `ZeroClipboard.activate(...);` itself so that
   // we can take advantage of jQuery's delegated `mouseover` event handlers rather than relying
   // on ZeroClipboard's direct (per-element) `mouseover` event handlers.
@@ -57,18 +53,44 @@ In your web page:
 ```
 
 
+## Options
+
+There are a handful of options that can be configured to customize the use of this jQuery Special Event:
+
+```js
+$.event.special.copy.options = {
+
+  // The CSS class name used to mimic the `:hover` pseudo-class
+  hoverClass: "hover",
+
+  // The CSS class name used to mimic the `:active` pseudo-class
+  activeClass: "active",
+
+  // The default action for the W3C Clipboard API spec (as it stands today) is to
+  // copy the currently selected text [and specificially ignore any pending data]
+  // unless `e.preventDefault();` is called.
+  requirePreventDefault: true,
+
+  // If HTML has been added to the pending data, this plugin can automatically
+  // convert the HTML into RTF (RichText) for use in non-HTML-capable editors.
+  autoConvertHtmlToRtf: true
+
+};
+```
+
+
 ## Examples
 
 Offers an API similar to the HTML5 Clipboard API.
-_Note:_ Some of these examples will also be leveraging the [jQuery.Range plugin](http://jquerypp.com/#range) where noted.
+_NOTE:_ Some of these examples will also be leveraging the [jQuery.Range plugin](http://jquerypp.com/#range) where noted.
 
-### Example 1: Using `beforeCopy`
+### Example 1: Using `beforecopy`
 
-The following example uses the `beforeCopy` event to change the selected text before it is copied. The modified selection is what will be copied into the clipboard if the action is not prevented.
+The following example uses the `beforecopy` event to change the selected text before it is copied. The modified selection is what will be copied into the clipboard if the action is not prevented.
 
 ```js
 jQuery(document).ready(function($) {
-  $("body").on("beforeCopy", ".zclip", function() {
+  $("body").on("beforecopy", ".zclip", function() {
     // Select the text of this element; this will be copied by default
     $("#textToCopy").range().select();  // ** Using the jQuery.Range plugin
   });
@@ -98,7 +120,6 @@ jQuery(document).ready(function($) {
     e.clipboardData.setData("text/plain", textToCopy);
     e.clipboardData.setData("text/html", "<b>" + textToCopy + "</b>");
     e.clipboardData.setData("application/rtf", "{\\rtf1\\ansi\n{\\b " + textToCopy + "}}");
-    e.clipboardData.setData("text/x-markdown", "**" + textToCopy + "**");
     
     // Prevent the default action of copying the currently selected text into the clipboard
     e.preventDefault();
@@ -106,22 +127,22 @@ jQuery(document).ready(function($) {
 });
 ```
 
-### Example 3: Using `afterCopy`
+### Example 3: Using `aftercopy`
 
-This is the same as [Example #1](#example-1-using-beforecopy), except that it also uses the `afterCopy` event to "celebrate".
+This is the same as [Example #1](#example-1-using-beforecopy), except that it also uses the `aftercopy` event to "celebrate".
 
 ```js
 jQuery(document).ready(function($) {
   var eventsMap = {
-    "beforeCopy": function() {
+    "beforecopy": function() {
       // Select the text of this element; this will be copied by default
       $("#textToCopy").range().select();  // ** Using the jQuery.Range plugin
     },
-    "afterCopy": function(/* afterCopyEvent */ e) {
-      // NOTE: The `afterCopyEvent` event interface is not based on any existing DOM event, so the event model
+    "aftercopy": function(/* aftercopyEvent */ e) {
+      // NOTE: The `aftercopyEvent` event interface is not based on any existing DOM event, so the event model
       // is still just a draft version. If you have any suggestions, please submit a new issue in this repo!
-      if (e.clipboardData.status("text/plain") === true) {
-        alert("Copy succeeded. Yay!");
+      if (e.status["text/plain"] === true) {
+        alert("Copy succeeded. Yay! Text: " + e.data["text/plain"]);
       }
       else {
         alert("Copy failed... BOOOOOO!!!");
@@ -146,5 +167,5 @@ _(Coming soon)_
 
 
 ## Release History
- - 0.0.0: Published to the jQuery Plugins Registry on 2014-XX-XX
-     - Initial release.
+ - 0.1.0: Published to the jQuery Plugins Registry on 2014-06-XX
+    - Initial release.
