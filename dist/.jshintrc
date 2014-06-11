@@ -59,6 +59,13 @@
 
   /* Environments */
   "browser": true,
-  "jquery": true
+  "jquery": true,
+
+  /* Global Variables */
+  "globals": {
+    "define": false,
+    "module": false,
+    "exports": false
+  }
 
 }

@@ -50,7 +50,6 @@ module.exports = function(grunt) {
     },
     concat: {
       options: {
-        banner: "<%= banner %>",
         stripBanners: true,
         process: function(src, filepath) {
           return filepath === "src/start.js" ?
@@ -61,11 +60,7 @@ module.exports = function(grunt) {
       dist: {
         src: [
           "src/start.js",
-          "<%= zeroclipboardPath %>/src/js/shared/state.js",
-          "<%= zeroclipboardPath %>/src/js/shared/private.js",
-          "<%= zeroclipboardPath %>/src/js/core/state.js",
-          "<%= zeroclipboardPath %>/src/js/core/private.js",
-          "<%= zeroclipboardPath %>/src/js/core/api.js",
+          "<%= zeroclipboardPath %>/dist/ZeroClipboard.Core.js",
           "src/jquery.<%= pkg.name %>.js",
           "src/end.js"
         ],
@@ -159,8 +154,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-uglify");
 
   // Custom task chains.
-  grunt.registerTask("build",   ["jshint:prebuild", "clean", "concat", "copy", "uglify", "jshint:postbuild"]);
-  grunt.registerTask("travis",  ["jshint", "connect", "qunit"]);
+  grunt.registerTask("build",   ["jshint:prebuild", "clean", "concat", "jshint:postbuild", "copy", "uglify"]);
+  grunt.registerTask("travis",  ["jshint:prebuild", "clean", "concat", "jshint:postbuild", "connect", "qunit"]);
 
   // Default task.
   grunt.registerTask("default", ["build", "connect", "qunit"]);

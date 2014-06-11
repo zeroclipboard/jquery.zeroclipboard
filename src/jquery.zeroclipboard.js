@@ -1,18 +1,18 @@
 /*
  * jquery.zeroclipboard
- * https://github.com/JamesMGreene/jquery.zeroclipboard
+ * https://github.com/zeroclipboard/jquery.zeroclipboard
  *
  * Copyright (c) 2014 James M. Greene
  * Licensed under the MIT license.
  */
 
 (function($, window, undefined) {
-  /*global ZeroClipboard, _clipData, _currentElement */
   "use strict";
 
 
   var mouseEnterBindingCount = 0,
-      customEventNamespace = ".zeroclipboard";
+      customEventNamespace = ".zeroclipboard",
+      ZeroClipboard = window.ZeroClipboard;
 
 
   function getSelectionData() {
@@ -116,6 +116,7 @@
       }
 
       // If there is pending HTML to transfer but no RTF, automatically do a basic conversion of HTML to RTF
+      var _clipData = ZeroClipboard.getData();
       if (
         $.event.special.copy.options.autoConvertHtmlToRtf === true &&
         _clipData["text/html"] &&
@@ -149,11 +150,11 @@
 
     if (
       $event.target &&
-      $event.target !== _currentElement &&
+      $event.target !== ZeroClipboard.activeElement() &&
       $event.target !== $("#" + ZeroClipboard.config("containerId"))[0] &&
       $event.target !== $("#" + ZeroClipboard.config("swfObjectId"))[0]
     ) {
-      ZeroClipboard.activate($event.target);
+      ZeroClipboard.focus($event.target);
     }
   }
 
@@ -162,11 +163,11 @@
 
     if (
       $event.relatedTarget &&
-      $event.relatedTarget !== _currentElement &&
+      $event.relatedTarget !== ZeroClipboard.activeElement() &&
       $event.relatedTarget !== $("#" + ZeroClipboard.config("containerId"))[0] &&
       $event.relatedTarget !== $("#" + ZeroClipboard.config("swfObjectId"))[0]
     ) {
-      ZeroClipboard.deactivate();
+      ZeroClipboard.blur();
     }
   }
 
@@ -256,7 +257,8 @@
           // Then add a one-time handler for 'copy' to trigger an 'aftercopy' event
           $this.one("copy", function(/* $copyEvent */) {
             // Mark all statuses as failed since we can't inject into the clipboard during a simulated event
-            var successData = {};
+            var successData = {},
+                _clipData = ZeroClipboard.getData();
             $.each(_clipData, function(key /*, val */) {
               successData[key] = false;
             });

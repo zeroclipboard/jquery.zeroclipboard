@@ -1,4 +1,7 @@
 
+  if (!zcExistsAlready) {
+    delete window.ZeroClipboard;
+  }
 
 })(
   jQuery,

@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/JamesMGreene/jquery.zeroclipboard.png)](https://travis-ci.org/JamesMGreene/jquery.zeroclipboard)
+[![Build Status](https://travis-ci.org/zeroclipboard/jquery.zeroclipboard.png)](https://travis-ci.org/zeroclipboard/jquery.zeroclipboard)
 
 # jquery.zeroclipboard
 
@@ -19,7 +19,7 @@ This plugin's functionality is made possible by the smart default configuration 
 
 ```js
 ZeroClipboard.config({
-  // Disabling allows the plugin to handle calling `ZeroClipboard.activate(...);` itself so that
+  // Disabling allows the plugin to handle calling `ZeroClipboard.focus(...);` itself so that
   // we can take advantage of jQuery's delegated `mouseover` event handlers rather than relying
   // on ZeroClipboard's direct (per-element) `mouseover` event handlers.
   autoActivate: false
@@ -32,9 +32,9 @@ Check the [jQuery Plugins Registry](http://plugins.jquery.com/zeroclipboard/) fo
 
 You can also download the [production version][min] or the [development version][max] from GitHub. You will also need a [ZeroClipboard v2.x SWF][swf].
 
-[min]: https://raw.github.com/JamesMGreene/jquery.zeroclipboard/master/dist/jquery.zeroclipboard.min.js
-[max]: https://raw.github.com/JamesMGreene/jquery.zeroclipboard/master/dist/jquery.zeroclipboard.js
-[swf]: https://raw.github.com/JamesMGreene/jquery.zeroclipboard/master/dist/ZeroClipboard.swf
+[min]: https://raw.github.com/zeroclipboard/jquery.zeroclipboard/master/dist/jquery.zeroclipboard.min.js
+[max]: https://raw.github.com/zeroclipboard/jquery.zeroclipboard/master/dist/jquery.zeroclipboard.js
+[swf]: https://raw.github.com/zeroclipboard/jquery.zeroclipboard/master/dist/ZeroClipboard.swf
 
 In your web page:
 
@@ -165,5 +165,7 @@ jQuery(document).ready(function($) {
 
 
 ## Release History
+ - 0.1.1: Published to the jQuery Plugins Registry on 2014-06-11
+    - Updated to use ZeroClipboard `v2.1.0`.
  - 0.1.0: Published to the jQuery Plugins Registry on 2014-06-10
     - Initial release.
