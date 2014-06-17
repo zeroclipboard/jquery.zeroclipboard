@@ -7,12 +7,12 @@
   module("jQuery#zeroclipboard");
 
   test("Should exist", function(assert) {
-    assert.expect(3);
+    assert.expect(4);
 
     assert.ok($.event.special.beforecopy);
     assert.ok($.event.special.copy);
-
-    assert.strictEqual($.event.special.aftercopy, undefined);
+    assert.ok($.event.special.aftercopy);
+    assert.ok($.event.special["copy-error"]);
   });
 
 })(jQuery, QUnit.module, QUnit.test);

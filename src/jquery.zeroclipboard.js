@@ -12,7 +12,8 @@
 
   var mouseEnterBindingCount = 0,
       customEventNamespace = ".zeroclipboard",
-      ZeroClipboard = window.ZeroClipboard;
+      ZeroClipboard = window.ZeroClipboard,
+      _trustedDomains = ZeroClipboard.config("trustedDomains");
 
 
   function getSelectionData() {
@@ -128,11 +129,17 @@
     }
   }
 
+  function zcErrorHandler(e) {
+    var $event = $.Event("copy-error", $.extend(e, { "type": "copy-error", "_source": "swf" }));
+    $(e.target).trigger($event);
+  }
+
   function setup() {
     $.event.props.push("clipboardData");
 
     ZeroClipboard.config($.extend(true, { autoActivate: false }, copyEventDef.options));
     ZeroClipboard.on("beforecopy copy aftercopy", zcEventHandler);
+    ZeroClipboard.on("error", zcErrorHandler);
     ZeroClipboard.create();
   }
 
@@ -212,6 +219,7 @@
       $this.data(zcDataKey, $this.data(zcDataKey) + 1);
     },
 
+
     /* Invoked each time this event is unbound */
     remove: function(handleObj) {
       var namespaces = customEventNamespace + (handleObj.namespace ? "." + handleObj.namespace : ""),
@@ -239,6 +247,7 @@
         teardown();
       }
     },
+
 
     /* Invoked each time a manual call to `trigger`/`triggerHandler` is made for this event type */
     trigger: function($event /*, data */) {
@@ -280,20 +289,16 @@
       }
     },
 
+
     /* Invoked each time this event type is about to dispatch its default action */
     _default: function(/* $event, data */) {
       // Prevent the element's default method from being called.
       return true;
     },
 
+
     /* Add some default configuration options that can be overridden */
     options: {
-
-      // The CSS class name used to mimic the `:hover` pseudo-class
-      hoverClass: "hover",
-
-      // The CSS class name used to mimic the `:active` pseudo-class
-      activeClass: "active",
 
       // The default action for the W3C Clipboard API spec (as it stands today) is to
       // copy the currently selected text [and specificially ignore any pending data]
@@ -302,19 +307,29 @@
 
       // If HTML has been added to the pending data, this plugin can automatically
       // convert the HTML into RTF (RichText) for use in non-HTML-capable editors.
-      autoConvertHtmlToRtf: true
+      autoConvertHtmlToRtf: true,
+
+      // SWF inbound scripting policy: page domains that the SWF should trust.
+      // (single string, or array of strings)
+      trustedDomains: _trustedDomains,
+
+      // The CSS class name used to mimic the `:hover` pseudo-class
+      hoverClass: "hover",
+
+      // The CSS class name used to mimic the `:active` pseudo-class
+      activeClass: "active"
 
     }
 
   };
 
 
-  // Leverage the jQuery Special Events API to expose these events in a seemingly more natural way
+
+  /* Leverage the jQuery Special Events API to expose these events in a seemingly more natural way */
   $.event.special.beforecopy = copyEventDef;
   $.event.special.copy = copyEventDef;
-
-  // It is unnecessary to make a jQuery Special Event for "aftercopy"
-  //$.event.special.aftercopy = {};
+  $.event.special.aftercopy = copyEventDef;
+  $.event.special["copy-error"] = copyEventDef;
 
 })(
   jQuery,

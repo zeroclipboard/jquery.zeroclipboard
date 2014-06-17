@@ -1,10 +1,10 @@
 /*!
  * jquery.zeroclipboard
- * Bind to the `beforecopy`, `copy`, and `aftercopy` events, custom DOM-like events for clipboard injection generated using jQuery's Special Events API and ZeroClipboard's Core module.
+ * Bind to the `beforecopy`, `copy`, `aftercopy`, and `copy-error` events, custom DOM-like events for clipboard injection generated using jQuery's Special Events API and ZeroClipboard's Core module.
  * Copyright (c) 2014 
  * Licensed MIT
  * https://github.com/zeroclipboard/jquery.zeroclipboard
- * v0.1.2
+ * v0.2.0
  */
 (function($, window, undefined) {
   "use strict";
@@ -1689,7 +1689,7 @@
     return this || window;
   }());
   (function($, window, undefined) {
-    var mouseEnterBindingCount = 0, customEventNamespace = ".zeroclipboard", ZeroClipboard = window.ZeroClipboard;
+    var mouseEnterBindingCount = 0, customEventNamespace = ".zeroclipboard", ZeroClipboard = window.ZeroClipboard, _trustedDomains = ZeroClipboard.config("trustedDomains");
     function getSelectionData() {
       var range, selectedText = "", selectedData = {}, sel = window.getSelection(), tmp = document.createElement("div");
       for (var i = 0, len = sel.rangeCount; i < len; i++) {
@@ -1751,12 +1751,20 @@
         }
       }
     }
+    function zcErrorHandler(e) {
+      var $event = $.Event("copy-error", $.extend(e, {
+        type: "copy-error",
+        _source: "swf"
+      }));
+      $(e.target).trigger($event);
+    }
     function setup() {
       $.event.props.push("clipboardData");
       ZeroClipboard.config($.extend(true, {
         autoActivate: false
       }, copyEventDef.options));
       ZeroClipboard.on("beforecopy copy aftercopy", zcEventHandler);
+      ZeroClipboard.on("error", zcErrorHandler);
       ZeroClipboard.create();
     }
     function teardown() {
@@ -1851,14 +1859,17 @@
         return true;
       },
       options: {
-        hoverClass: "hover",
-        activeClass: "active",
         requirePreventDefault: true,
-        autoConvertHtmlToRtf: true
+        autoConvertHtmlToRtf: true,
+        trustedDomains: _trustedDomains,
+        hoverClass: "hover",
+        activeClass: "active"
       }
     };
     $.event.special.beforecopy = copyEventDef;
     $.event.special.copy = copyEventDef;
+    $.event.special.aftercopy = copyEventDef;
+    $.event.special["copy-error"] = copyEventDef;
   })(jQuery, function() {
     return this || window;
   }());

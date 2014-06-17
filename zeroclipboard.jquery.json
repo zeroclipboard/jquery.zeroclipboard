@@ -1,8 +1,8 @@
 {
   "name": "zeroclipboard",
   "title": "jquery.zeroclipboard",
-  "description": "Bind to the `beforecopy`, `copy`, and `aftercopy` events, custom DOM-like events for clipboard injection generated using jQuery's Special Events API and ZeroClipboard's Core module.",
-  "version": "0.1.2",
+  "description": "Bind to the `beforecopy`, `copy`, `aftercopy`, and `copy-error` events, custom DOM-like events for clipboard injection generated using jQuery's Special Events API and ZeroClipboard's Core module.",
+  "version": "0.2.0",
   "homepage": "https://github.com/zeroclipboard/jquery.zeroclipboard",
   "author": {
     "name": "James M. Greene",

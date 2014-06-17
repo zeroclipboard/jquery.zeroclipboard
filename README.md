@@ -2,11 +2,13 @@
 
 # jquery.zeroclipboard
 
-Bind to the `beforecopy`, `copy`, and `aftercopy` events, custom DOM-like events for clipboard injection generated using jQuery's Special Events API and [ZeroClipboard](http://zeroclipboard.org/)'s Core module. In order for the clipboard injection functionality to be hooked up, you _**MUST**_ bind a handler for either `beforecopy` or `copy` on the selected element set.
+Bind to the `beforecopy`, `copy`, `aftercopy`, and `copy-error` events, custom DOM-like events for clipboard injection generated using jQuery's Special Events API and [ZeroClipboard](http://zeroclipboard.org/)'s Core module.
 
 The `beforecopy` and `copy` events trigger when the user clicks on a bound element.
 
 The `aftercopy` event triggers after the clipboard injection has been attempted, regardless of whether or not the injection succeeded.
+
+The `copy-error` event triggers if any of the underlying ZeroClipboard error events occur.
 
 The `click` event will also be bubbled after the `aftercopy` event handlers have all been triggered or stopped.
 
@@ -15,16 +17,7 @@ The `click` event will also be bubbled after the `aftercopy` event handlers have
 
 ZeroClipboard requires the use of Flash Player 11.0.0 or higher. See [ZeroClipboard](https://github.com/zeroclipboard/zeroclipboard) for more details about the underlying mechanism.
 
-This plugin's functionality is made possible by the smart default configuration values made in ZeroClipboard `v2.x`, plus internally overriding one configuration option:
-
-```js
-ZeroClipboard.config({
-  // Disabling allows the plugin to handle calling `ZeroClipboard.focus(...);` itself so that
-  // we can take advantage of jQuery's delegated `mouseover` event handlers rather than relying
-  // on ZeroClipboard's direct (per-element) `mouseover` event handlers.
-  autoActivate: false
-});
-```
+This plugin's functionality is made possible by the smart default configuration values made in ZeroClipboard `v2.x`, plus internally overriding a few configuration options.
 
 
 ## Getting Started
@@ -62,12 +55,6 @@ There are a handful of options that can be configured to customize the use of th
 ```js
 $.event.special.copy.options = {
 
-  // The CSS class name used to mimic the `:hover` pseudo-class
-  hoverClass: "hover",
-
-  // The CSS class name used to mimic the `:active` pseudo-class
-  activeClass: "active",
-
   // The default action for the W3C Clipboard API spec (as it stands today) is to
   // copy the currently selected text [and specificially ignore any pending data]
   // unless `e.preventDefault();` is called.
@@ -75,7 +62,17 @@ $.event.special.copy.options = {
 
   // If HTML has been added to the pending data, this plugin can automatically
   // convert the HTML into RTF (RichText) for use in non-HTML-capable editors.
-  autoConvertHtmlToRtf: true
+  autoConvertHtmlToRtf: true,
+
+  // SWF inbound scripting policy: page domains that the SWF should trust.
+  // (single string, or array of strings)
+  trustedDomains: ZeroClipboard.config("trustedDomains"),
+
+  // The CSS class name used to mimic the `:hover` pseudo-class
+  hoverClass: "hover",
+
+  // The CSS class name used to mimic the `:active` pseudo-class
+  activeClass: "active"
 
 };
 ```
@@ -131,7 +128,7 @@ jQuery(document).ready(function($) {
 
 ### Example 3: Using `aftercopy`
 
-This is the same as [Example #1](#example-1-using-beforecopy), except that it also uses the `aftercopy` event to "celebrate".
+This is the same as [Example #1](#example-1-using-beforecopy), except that it also uses the `aftercopy` event to "celebrate" and the `copy-error` event to watch for errors.
 
 ```js
 jQuery(document).ready(function($) {
@@ -149,6 +146,9 @@ jQuery(document).ready(function($) {
       else {
         alert("Copy failed... BOOOOOO!!!");
       }
+    },
+    "copy-error": function(errorEvent) {
+      alert("ERROR! " + errorEvent);
     }
   };
   $("body").on(eventsMap, ".zclip");
