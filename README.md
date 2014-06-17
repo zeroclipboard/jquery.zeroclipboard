@@ -156,6 +156,20 @@ jQuery(document).ready(function($) {
 ```
 
 
+## `file://` Protocol Limitations
+
+If you want to host a page locally on the `file://` protocol, you must specifically configure
+ZeroClipboard to trust ALL domains for SWF interaction via a wildcard. This configuration must be
+set _before_ attaching any event handlers for the `beforecopy`, `copy`, `aftercopy`, or `copy-error`
+events:
+
+```js
+$.event.special.copy.options.trustedDomains = ["*"];
+```
+
+This wildcard configuration should _**NOT**_ be used in environments hosted over HTTP/HTTPS.
+
+
 ## Compatibility
 **Works 100% with jQuery versions:**  
  - 1.7.x and above
