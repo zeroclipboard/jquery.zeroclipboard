@@ -162,10 +162,3 @@ jQuery(document).ready(function($) {
 
 **Untested jQuery versions:**  
  - Anything below 1.7.x (incompatible jQuery Special Events API)
-
-
-## Release History
- - 0.1.1: Published to the jQuery Plugins Registry on 2014-06-11
-    - Updated to use ZeroClipboard `v2.1.0`.
- - 0.1.0: Published to the jQuery Plugins Registry on 2014-06-10
-    - Initial release.
