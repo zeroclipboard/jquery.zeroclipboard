@@ -75,11 +75,11 @@ module.exports = function(grunt) {
     },
     uglify: {
       options: {
-        report: "min",
-        banner: "<%= banner %>"
+        report: "min"
       },
       js: {
         options: {
+          banner: "<%= banner %>",
           preserveComments: function(node, comment) {
             return comment &&
               comment.type === "comment2" &&
