@@ -4,7 +4,7 @@
  * Copyright (c) 2014 
  * Licensed MIT
  * https://github.com/zeroclipboard/jquery.zeroclipboard
- * v0.1.1
+ * v0.1.2
  */
 (function($, window, undefined) {
   "use strict";
