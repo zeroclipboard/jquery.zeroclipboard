@@ -38,16 +38,29 @@
   <script>
     jQuery(document).ready(function($) {
 
-      $("#direct-bindings .btn").on("beforecopy copy aftercopy", function(e) {
-        console.log("Direct binding - " + e.type + " - #" + e.target.id);
-        //console.dir(e);
-      });
+      $("#direct-bindings .btn")
+        .on("beforecopy copy aftercopy", function(e) {
+          console.log("Direct binding - " + e.type + " - #" + e.target.id);
+          //console.dir(e);
+        })
+        .on("copy", function(e) {
+          e.clipboardData.clearData();
+          e.clipboardData.setData("text/plain", "Direct binding - FOO");
+          e.clipboardData.setData("text/html", "<b>Direct binding - FOO</b>");
+          e.preventDefault();
+        });
 
-      $("#delegate-bindings").on("beforecopy copy aftercopy", ".btn", function(e) {
-        console.log("Delegate binding - " + e.type + " - #" + e.target.id);
-        //console.dir(e);
-      });
-
+      $("#delegate-bindings")
+        .on("beforecopy copy aftercopy", ".btn", function(e) {
+          console.log("Delegate binding - " + e.type + " - #" + e.target.id);
+          //console.dir(e);
+        })
+        .on("copy", ".btn", function(e) {
+          e.clipboardData.clearData();
+          e.clipboardData.setData("text/plain", "Delegate binding - BAR");
+          e.clipboardData.setData("text/html", "<b>Delegate binding - BAR</b>");
+          e.preventDefault();
+        });
     });
   </script>
 </body>
