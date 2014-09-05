@@ -1,6 +1,6 @@
 {
   "name": "jquery.zeroclipboard",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "homepage": "https://github.com/zeroclipboard/jquery.zeroclipboard/tree/master",
   "authors": [
     "James M. Greene <james.m.greene@gmail.com>"
@@ -17,6 +17,10 @@
     "test",
     "tests",
     "libs",
-    "src"
+    "src",
+    "Gruntfile.js",
+    "package.json",
+    "zeroclipboard.jquery.json",
+    "CONTRIBUTING.MD"
   ]
 }
