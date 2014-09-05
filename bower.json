@@ -1,0 +1,22 @@
+{
+  "name": "jquery.zeroclipboard",
+  "version": "0.2.2",
+  "homepage": "https://github.com/zeroclipboard/jquery.zeroclipboard/tree/master",
+  "authors": [
+    "James M. Greene <james.m.greene@gmail.com>"
+  ],
+  "main": "dist/jquery.zeroclipboard.js",
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "libs",
+    "src"
+  ]
+}
