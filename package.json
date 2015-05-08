@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "jquery-plugin",
+  "name": "jquery.zeroclipboard",
   "version": "0.0.0-ignored",
   "engines": {
     "node": ">= 0.8.0"
