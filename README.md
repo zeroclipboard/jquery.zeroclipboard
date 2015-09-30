@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/zeroclipboard/jquery.zeroclipboard.png)](https://travis-ci.org/zeroclipboard/jquery.zeroclipboard)
+[![Build Status](https://travis-ci.org/zeroclipboard/jquery.zeroclipboard.png?branch=master)](https://travis-ci.org/zeroclipboard/jquery.zeroclipboard)
 
 # jquery.zeroclipboard
 
